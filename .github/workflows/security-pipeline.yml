@@ -111,8 +111,4 @@ jobs:
           format: sarif
           output: trivy-report.sarif
 
-      - name: Upload Trivy SARIF to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always()
-        with:
-          sarif_file: trivy-report.sarif
+      
