@@ -77,7 +77,7 @@ jobs:
           pip install -r requirements-dev.txt
 
       - name: Run tests
-        run: pytest tests/ -v
+        run: PYTHONPATH=. pytest tests/ -v
 
   container-scan:
     name: Container Scan — Trivy

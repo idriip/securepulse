@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import httpx
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from app.models import CVEResponse, CVEDetail, HealthResponse
 from app.config import settings
 
@@ -38,7 +38,7 @@ app.add_middleware(
 @app.get("/health", response_model=HealthResponse, tags=["System"])
 async def health_check():
     """Liveness probe endpoint for Kubernetes."""
-    return HealthResponse(status="ok", timestamp=datetime.utcnow().isoformat())
+    return HealthResponse(status="ok", timestamp=datetime.now(timezone.utc).isoformat())
 
 
 @app.get("/cves", response_model=CVEResponse, tags=["Vulnerabilities"])
@@ -107,7 +107,7 @@ async def get_recent_cves(
     return CVEResponse(
         total_results=data.get("totalResults", 0),
         returned=len(results),
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         cves=results,
     )
 
