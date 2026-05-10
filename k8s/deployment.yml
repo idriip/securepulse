@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: securepulse
-          image: 303789596018.dkr.ecr.us-east-1.amazonaws.com/securepulse:latest
+          image: 303789596018.dkr.ecr.us-east-1.amazonaws.com/securepulse:1.0.0
           ports:
             - containerPort: 8000
           env:
@@ -37,6 +37,7 @@ spec:
               memory: "256Mi"
               cpu: "200m"
           securityContext:
+            runAsNonRoot: true
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:

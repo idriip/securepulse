@@ -82,11 +82,27 @@ jobs:
 
       - name: Run tests
         run: PYTHONPATH=. pytest tests/ -v
+        # ── Job 4: OPA/Conftest policy checks ───────────────────────────────────────
+  policy-check:
+    name: Policy Check — Conftest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Conftest
+        run: |
+          wget https://github.com/open-policy-agent/conftest/releases/download/v0.56.0/conftest_0.56.0_Linux_x86_64.tar.gz
+          tar xzf conftest_0.56.0_Linux_x86_64.tar.gz
+          sudo mv conftest /usr/local/bin/
+
+      - name: Run OPA policy checks
+        run: conftest test k8s/deployment.yml --policy security/policies/kubernetes.rego
 
   container-scan:
     name: Container Scan — Trivy
     runs-on: ubuntu-latest
-    needs: [sast, dependency-scan, test]
+    needs: [sast, dependency-scan, test, policy-check]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
