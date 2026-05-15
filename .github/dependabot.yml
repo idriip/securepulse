@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "pytest"
+        versions: ["9.x"]
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+          
