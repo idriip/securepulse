@@ -21,6 +21,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     APP_WORKERS=1
 
 RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
