@@ -40,6 +40,23 @@ async def health_check():
     """Liveness probe endpoint for Kubernetes."""
     return HealthResponse(status="ok", timestamp=datetime.now(timezone.utc).isoformat())
 
+@app.get("/ready", response_model=HealthResponse, tags=["System"])
+async def readiness_check():
+    """Readiness probe — checks connectivity to NVD API."""
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as client:
+            response = await client.get(
+                "https://services.nvd.nist.gov/rest/json/cves/2.0",
+                params={"resultsPerPage": 1}
+            )
+            response.raise_for_status()
+    except Exception:
+        raise HTTPException(
+            status_code=503,
+            detail="NVD API is unreachable — pod not ready"
+        )
+    return HealthResponse(status="ready", timestamp=datetime.now(timezone.utc).isoformat())    
+
 
 @app.get("/cves", response_model=CVEResponse, tags=["Vulnerabilities"])
 async def get_recent_cves(

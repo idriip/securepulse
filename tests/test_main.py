@@ -13,6 +13,13 @@ def test_health_check():
     assert data["status"] == "ok"
     assert "timestamp" in data
 
+def test_readiness_check_nvd_unreachable():
+    """Readiness probe returns 503 when NVD API is unreachable."""
+    with patch("httpx.AsyncClient.get", new_callable=AsyncMock) as mock_get:
+        mock_get.side_effect = Exception("NVD unreachable")
+        response = client.get("/ready")
+        assert response.status_code == 503    
+
 
 def test_get_cves_invalid_severity():
     response = client.get("/cves?severity=EXTREME")
