@@ -1,3 +1,14 @@
+"""
+SecurePulse Load Tests
+======================
+Run locally:  locust -f tests/locustfile.py --host http://localhost:8000
+Run headless: locust -f tests/locustfile.py --headless --users 10 --spawn-rate 2 --run-time 60s --host http://localhost:8000
+
+Note: The NVD API enforces rate limits (~5 req/30s without an API key).
+502 errors during load tests against localhost are expected — they indicate
+the NVD upstream is throttling requests, not that our app is failing.
+With an NVD API key (set via env var), rate limits increase significantly.
+"""
 from locust import HttpUser, task, between
 
 
