@@ -48,9 +48,9 @@ deny contains msg if {
   msg := sprintf("Container '%s' must not use the ':latest' image tag", [container.name])
 }
 
-deny contains msg if {
+ddeny contains msg if {
   input.kind == "Deployment"
   container := input.spec.template.spec.containers[_]
-  not startswith(container.image, "303789596018.dkr.ecr.us-east-1.amazonaws.com/")
+  not startswith(container.image, "303789596018.dkr.ecr.us-east-2.amazonaws.com/")
   msg := sprintf("Container '%s' must only use images from our ECR registry", [container.name])
 }

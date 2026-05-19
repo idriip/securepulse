@@ -21,7 +21,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: securepulse
-          image: 303789596018.dkr.ecr.us-east-1.amazonaws.com/securepulse:1.0.0
+          image: 303789596018.dkr.ecr.us-east-2.amazonaws.com/securepulse:1.1.0
           ports:
             - containerPort: 8000
           env:

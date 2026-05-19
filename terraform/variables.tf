@@ -31,7 +31,7 @@ variable "eks_node_instance_type" {
 variable "eks_desired_nodes" {
   description = "Desired number of EKS worker nodes"
   type        = number
-  default     = 1
+  default     = 2
 }
 
 variable "eks_min_nodes" {

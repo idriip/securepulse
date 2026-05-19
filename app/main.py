@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 import logging
 from app.config import settings
 from app.routes import health, cves
+from prometheus_fastapi_instrumentator import Instrumentator
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -32,3 +33,4 @@ app.add_middleware(
 
 app.include_router(health.router)
 app.include_router(cves.router)
+Instrumentator().instrument(app).expose(app)
